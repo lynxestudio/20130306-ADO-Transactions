@@ -12,7 +12,7 @@ Esta interfaz se utiliza para crear clases Transaction asociadas con un proveedo
 Como ejemplo escribimos un programa en MonoDevelop que utiliza las tablas: <i>Invoices</i> e <i>InvoiceDetails</i> que se utilizaron en esta 
 <a href="http://xomalli.blogspot.mx/2013/03/entendiendo-transacciones-con-postgresql.html">entrada</a>  este programa utiliza una transaction y 4 comandos SQL con los que guarda una factura (invoice) con dos detalles (invoice details), actualizando el total de la factura conforme a la cantidad de productos y su precio.</p>
 <div>
-<IMG src="picture_library/transac/fig6.png" width="777">
+<IMG src="images/fig6.png" width="700">
 </div>
 <p align="justify">
 Este programa asocia una transacción con una conexión abierta.
@@ -40,5 +40,5 @@ if (conn != null)
 </pre>
 Es importante recordar que la transacción queda pendiente hasta que no se confirme (commit) o se cancele (rollback), si se cierra la conexión mediante el método Close se ejecuta un rollback en todas las transacciones pendientes.</p>
 <div>
-<IMG src="picture_library/transac/fig7.png" width="777">
+<IMG src="images/fig7.png" width="700">
 </div>
