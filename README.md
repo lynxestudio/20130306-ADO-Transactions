@@ -2,9 +2,11 @@
 
 <p align="justify">
 En .NET las transacciones son representadas por la clase Transaction que implementa la interfaz <a href="http://msdn.microsoft.com/en-us/library/system.data.idbtransaction.aspx">IDbTransaction</a> definida dentro del ensamblado System.Data
-esta interfaz proporciona los métodos:<br></br>
-<div><b>Commit:</b> Confirma la transacción y persiste los datos.</div>
-<div><b>Rollback:</b> Regresa los datos a un estado anterior a la transacción.</div><br><br>
+esta interfaz proporciona los métodos:<br>
+<ol>
+<li><b>Commit:</b> Confirma la transacción y persiste los datos.</li>
+<li><b>Rollback:</b> Regresa los datos a un estado anterior a la transacción.</li>
+</ol>
 			
 Esta interfaz se utiliza para crear clases Transaction asociadas con un proveedor especifico, así para SQL Server tenemos <i>SqlTransaction</i>, para Oracle <i>OracleTransaction</i> y para PostgreSQL <i>NpgsqlTransaction</i>.</p>
 <p align="justify">La ventaja de crear transacciones en .NET y no en la bases de datos es proporcionar  a la aplicaciones la capacidad de las transacciones en caso de utilizar una base de datos que no proporcione o soporte esa característica.
