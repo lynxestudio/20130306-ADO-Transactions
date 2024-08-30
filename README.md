@@ -1,4 +1,4 @@
-# Entendiendo Transacciones (Transactions) con ADO .NET y PostgreSQL
+# Ejemplo de Transacciones (Transactions) en PostgreSQL con ADO.NET y C#.
 
 <p align="justify">
 En .NET las transacciones son representadas por la clase Transaction que implementa la interfaz <a href="http://msdn.microsoft.com/en-us/library/system.data.idbtransaction.aspx">IDbTransaction</a> definida dentro del ensamblado System.Data
@@ -12,7 +12,7 @@ Esta interfaz se utiliza para crear clases Transaction asociadas con un proveedo
 <p align="justify">La ventaja de crear transacciones en .NET y no en la bases de datos es proporcionar  a la aplicaciones la capacidad de las transacciones en caso de utilizar una base de datos que no proporcione o soporte esa característica.
 <br>
 Como ejemplo escribimos un programa en MonoDevelop que utiliza las tablas: <i>Invoices</i> e <i>InvoiceDetails</i> que se utilizaron en esta 
-<a href="http://xomalli.blogspot.mx/2013/03/entendiendo-transacciones-con-postgresql.html">entrada</a>  este programa utiliza una transaction y 4 comandos SQL con los que guarda una factura (invoice) con dos detalles (invoice details), actualizando el total de la factura conforme a la cantidad de productos y su precio.</p>
+<a href="https://github.com/lynxestudio/20130305-PostgreSQL-Transactions">entrada</a>  este programa utiliza una transaction y 4 comandos SQL con los que guarda una factura (invoice) con dos detalles (invoice details), actualizando el total de la factura conforme a la cantidad de productos y su precio.</p>
 <div>
 <IMG src="images/fig6.png" width="700">
 </div>
