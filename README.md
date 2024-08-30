@@ -53,5 +53,5 @@ if (conn != null)
 Es importante recordar que la transacción queda pendiente hasta que no se confirme (commit) o se cancele (rollback), si se cierra la conexión mediante el método Close se ejecuta un rollback en todas las transacciones pendientes.
 </p>
 <div>
-<IMG src="images/fig7.png" width="700">
+<img src="images/fig2.png" width="811" height="780" alt="">
 </div>
