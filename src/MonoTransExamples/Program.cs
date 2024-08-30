@@ -1,26 +1,27 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Npgsql;
-using NpgsqlTypes;
 using System.Data;
 using System.Globalization;
+using Npgsql;
+using NpgsqlTypes;
 
 
 namespace MonoTransExamples
-    {
+{
     class Program
     {
-    static string connString = "Server=127.0.0.1;Port=5432;Database=myinvoices;User ID=postgres;Password=Pa$$W0rd";
 
-    static string commandText1 = "INSERT INTO invoices(invoice_number,invoice_date,invoice_total)" +
+    static readonly string connString = "Server=127.0.0.1;Port=5432;Database=myinvoices;User ID=martin;Password=Pa$$W0rd";
+
+    static readonly string commandText1 = "INSERT INTO invoices(invoice_number,invoice_date,invoice_total)" +
         "VALUES(:number,:date,:total)";
-    static string commandText2 = "SELECT MAX(invoice_id) FROM invoices";
-    static string commandText3 = "INSERT INTO invoicedetails(invoice_id,invoiced_description,invoiced_quantity,invoiced_amount)" +
+    static readonly string commandText2 = "SELECT MAX(invoice_id) FROM invoices";
+    static readonly string commandText3 = "INSERT INTO invoicedetails(invoice_id,invoiced_description,invoiced_quantity,invoiced_amount)" +
         "VALUES(:id,:description,:quantity,:amount)";
-    static string commandText4 = "UPDATE invoices SET invoice_total = :total WHERE invoice_id = :id";
+    static readonly string commandText4 = "UPDATE invoices SET invoice_total = :total WHERE invoice_id = :id";
+
 static void Main(string[] args)
 {
+            Utilities.SetTitle("ADO.NET Transactions Sample");
     bool success = false;
     int recordsAffected = 0;
     Invoice invoice = new Invoice { 
@@ -55,16 +56,17 @@ static void Main(string[] args)
             cmd1.Parameters.Add("date", NpgsqlDbType.Timestamp).Value = invoice.Invoice_date;
             cmd1.Parameters.Add("total", NpgsqlDbType.Money).Value = invoice.Invoice_total;
             recordsAffected = cmd1.ExecuteNonQuery();
+                    Utilities.PrintMessage(recordsAffected + " invoiced inserted");
         }
-        Console.WriteLine("{0} invoiced inserted",recordsAffected);
+
         if (recordsAffected > 0)
         {
             using (NpgsqlCommand cmd2 = new NpgsqlCommand(commandText2, conn, transaction))
             {
                 cmd2.CommandType = CommandType.Text;
                 invoice.Invoice_id = Convert.ToInt32(cmd2.ExecuteScalar());
+                Utilities.PrintMessage("Invoice Id  " + invoice.Invoice_id);
             }
-            Console.WriteLine("Invoice Id {0} ",invoice.Invoice_id);
         }
         if (invoice.Invoice_id > 0)
         {
@@ -83,23 +85,29 @@ static void Main(string[] args)
                 }
                 invoice.Invoice_total += invd.Invoiced_amount * invd.Invoiced_quantity;
             }
-            Console.WriteLine("Total: {0} ,{1} records affected ",invoice.Invoice_total,recordsAffected);
+            Utilities.PrintMessage("Total: " + invoice.Invoice_total + " ,"+ recordsAffected + " records affected ");
+            
         }
         if (recordsAffected == details.Length)
         {
-            using (NpgsqlCommand cmd4 = new NpgsqlCommand(commandText4, conn, transaction)) {
+            using (NpgsqlCommand cmd4 = new NpgsqlCommand(commandText4, conn, transaction)) 
+            {
                 cmd4.CommandType = CommandType.Text;
                 cmd4.Parameters.Add("total",NpgsqlDbType.Money).Value = invoice.Invoice_total;
                 cmd4.Parameters.Add("id",NpgsqlDbType.Integer).Value = invoice.Invoice_id;
                 recordsAffected = cmd4.ExecuteNonQuery();
             }
-            Console.WriteLine("Updated invoice {0} with total {1} ",invoice.Invoice_id,invoice.Invoice_total);
+                    Utilities.PrintMessage("Updated invoice " + invoice.Invoice_id + " with total "+ invoice.Invoice_total);
         }
         if(recordsAffected > 0)
                 success = true;
-    }catch(NpgsqlException ex){
-        Console.WriteLine("Error {0} ", ex.Message);
-    }finally{
+    }
+    catch(NpgsqlException ex)
+    {
+                Utilities.PrintMessage(ex.Message);
+    }
+    finally
+    {
         if (success)
             transaction.Commit();
         else
@@ -108,12 +116,13 @@ static void Main(string[] args)
             if (conn.State == ConnectionState.Open)
                 conn.Close();
     }
-    Console.WriteLine("Done");
-    Console.ReadLine();
+            Utilities.PrintMessage("Done!");
+            Utilities.Pause();
 }
 }
 
-    class Invoice {
+    class Invoice 
+    {
     public int Invoice_id { set; get; }
     public int Invoice_number { set; get; }
     public DateTime Invoice_date { set; get; }
@@ -121,7 +130,8 @@ static void Main(string[] args)
 
     }
 
-    class Invoicedetails {
+    class Invoicedetails 
+    {
     public int Invoiced_id { set; get; }
     public Invoice Invoice { set; get; }
     public string Invoiced_description { set; get; }
